@@ -7,7 +7,9 @@ import java.util.Map;
 import org.lxr.protocal.command.Command;
 import org.lxr.protocal.packet.Packet;
 import org.lxr.protocal.packet.request.LoginRequestPacket;
+import org.lxr.protocal.packet.request.MessageRequestPacket;
 import org.lxr.protocal.packet.response.LoginResponsePacket;
+import org.lxr.protocal.packet.response.MessageResponsePacket;
 import org.lxr.serialize.Serializer;
 import org.lxr.serialize.impl.JSONSerializer;
 
@@ -32,6 +34,8 @@ public class PacketCodec
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

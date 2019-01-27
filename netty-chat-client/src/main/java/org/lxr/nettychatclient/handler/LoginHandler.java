@@ -9,6 +9,7 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.lxr.protocal.packet.request.LoginRequestPacket;
 import org.lxr.protocal.packet.response.LoginResponsePacket;
+import org.lxr.util.LoginUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -32,13 +33,14 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginResponsePacke
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext,
+    protected void channelRead0(ChannelHandlerContext ctx,
             LoginResponsePacket loginResponsePacket) throws Exception
     {
 
         if (loginResponsePacket.isSuccess())
         {
             log.info(new Date() + ": 客户端登录成功");
+            LoginUtil.markAsLogin(ctx.channel());
         }
         else
         {
