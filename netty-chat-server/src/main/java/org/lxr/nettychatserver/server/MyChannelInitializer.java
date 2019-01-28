@@ -3,10 +3,12 @@ package org.lxr.nettychatserver.server;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.lxr.nettychatserver.codec.PacketDecoder;
 import org.lxr.nettychatserver.codec.PacketEncoder;
 import org.lxr.nettychatserver.handler.LoginHandler;
 import org.lxr.nettychatserver.handler.MessageRequestHandler;
+import org.lxr.nettychatserver.handler.Spliter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +27,13 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private MessageRequestHandler messageRequestHandler;
 
+    @Autowired
+    private Spliter spliter;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
+        ch.pipeline().addLast(spliter);
         ch.pipeline().addLast(packetDecoder);
         ch.pipeline().addLast(packetEncoder);
         ch.pipeline().addLast(loginHandler);
