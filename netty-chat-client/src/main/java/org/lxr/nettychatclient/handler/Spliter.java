@@ -3,7 +3,6 @@ package org.lxr.nettychatclient.handler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import lombok.extern.slf4j.Slf4j;
 import org.lxr.codec.PacketCodec;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @description: 拆包器
  * @create: 2019-01-28 15:11
  **/
-@Component
 public class Spliter extends LengthFieldBasedFrameDecoder
 {
     private static final int LENGTH_FIELD_OFFSET = 7;

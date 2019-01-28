@@ -27,13 +27,11 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private MessageResponseHandler messageResponseHandler;
 
-    @Autowired
-    private Spliter spliter;
 
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
-        ch.pipeline().addLast(spliter);
+        ch.pipeline().addLast(new Spliter());
         ch.pipeline().addLast(packetDecoder);
         ch.pipeline().addLast(packetEncoder);
         ch.pipeline().addLast(loginHandler);

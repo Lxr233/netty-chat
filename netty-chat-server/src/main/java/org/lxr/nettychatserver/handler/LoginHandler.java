@@ -13,6 +13,7 @@ import org.lxr.codec.PacketCodec;
 import org.lxr.protocal.packet.Packet;
 import org.lxr.protocal.packet.request.LoginRequestPacket;
 import org.lxr.protocal.packet.response.LoginResponsePacket;
+import org.lxr.util.LoginUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +33,9 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginRequestPacket
 
         if (valid(loginRequestPacket))
         {
-            log.info("user:{} 登陆成功", loginRequestPacket.getUsername());
+            log.info(new Date() +"   user:{} 登陆成功", loginRequestPacket.getUsername());
             loginResponsePacket.setSuccess(true);
+            LoginUtil.markAsLogin(ctx.channel());
         }
         else
         {
