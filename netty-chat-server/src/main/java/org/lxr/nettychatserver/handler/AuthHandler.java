@@ -1,9 +1,10 @@
 package org.lxr.nettychatserver.handler;
 
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
-import org.lxr.util.LoginUtil;
+import org.lxr.util.SessionUtil;
 import org.springframework.stereotype.Component;
 
 
@@ -13,11 +14,12 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Slf4j
+@Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter
 {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if(!LoginUtil.hasLogin(ctx.channel())){
+        if(!SessionUtil.hasLogin(ctx.channel())){
             ctx.channel().close();
         }
         else {
@@ -29,7 +31,7 @@ public class AuthHandler extends ChannelInboundHandlerAdapter
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx){
-        if(LoginUtil.hasLogin(ctx.channel())){
+        if(SessionUtil.hasLogin(ctx.channel())){
             log.info("当前连接登录验证完毕，无需再次验证, AuthHandler 被移除");
         }
         else {

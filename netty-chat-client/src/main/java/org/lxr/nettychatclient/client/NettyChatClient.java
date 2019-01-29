@@ -9,8 +9,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import org.lxr.protocal.packet.request.LoginRequestPacket;
 import org.lxr.protocal.packet.request.MessageRequestPacket;
-import org.lxr.util.LoginUtil;
+import org.lxr.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,14 +83,39 @@ public class NettyChatClient
 
     private void startConsoleThread(Channel channel)
     {
-        new Thread(() -> {
-            while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送至服务端: ");
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
 
-                    channel.writeAndFlush(new MessageRequestPacket(line));
+        new Thread(() -> {
+            //是否进行了登录操作
+            boolean hasLogin=false;
+            while (!Thread.interrupted()) {
+                if (!SessionUtil.hasLogin(channel)&&!hasLogin) {
+                    System.out.println("输入用户名登录: ");
+
+                    String userName = sc.nextLine();
+
+                    loginRequestPacket.setUserName(userName);
+                    // 密码使用默认的
+                    loginRequestPacket.setPassword("pwd");
+
+                    channel.writeAndFlush(loginRequestPacket);
+                    hasLogin=true;
+                }
+                else if(hasLogin&&!SessionUtil.hasLogin(channel)){
+                    //进行了登录，还没响应登录成功
+                    try {
+                        System.out.println("等待服务端登录响应...");
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+                else {
+                    System.out.println("输入发送给的用户: ");
+                    String toUserId = sc.next();
+                    System.out.println("输入发送的消息: ");
+                    String message = sc.next();
+                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
                 }
             }
         }).start();

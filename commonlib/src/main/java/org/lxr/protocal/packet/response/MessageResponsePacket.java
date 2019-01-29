@@ -12,6 +12,8 @@ import org.lxr.protocal.packet.Packet;
 public class MessageResponsePacket extends Packet
 {
     private String message;
+    private String fromUserName;
+    private String fromUserId;
 
     @Override
     public Byte getCommand() {

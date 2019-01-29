@@ -20,12 +20,6 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     private LoginHandler loginHandler;
 
     @Autowired
-    private PacketDecoder packetDecoder;
-
-    @Autowired
-    private PacketEncoder packetEncoder;
-
-    @Autowired
     private MessageRequestHandler messageRequestHandler;
 
     @Autowired
@@ -35,8 +29,8 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
         ch.pipeline().addLast(new Spliter());
-        ch.pipeline().addLast(packetDecoder);
-        ch.pipeline().addLast(packetEncoder);
+        ch.pipeline().addLast(new PacketDecoder());
+        ch.pipeline().addLast(new PacketEncoder());
         ch.pipeline().addLast(loginHandler);
         ch.pipeline().addLast(authHandler);
         ch.pipeline().addLast(messageRequestHandler);
