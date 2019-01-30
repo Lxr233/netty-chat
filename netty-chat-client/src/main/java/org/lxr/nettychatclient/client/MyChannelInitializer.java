@@ -11,6 +11,7 @@ import org.lxr.nettychatclient.handler.JoinGroupResponseHandler;
 import org.lxr.nettychatclient.handler.LoginHandler;
 import org.lxr.nettychatclient.handler.LogoutResponseHandler;
 import org.lxr.nettychatclient.handler.MessageResponseHandler;
+import org.lxr.nettychatclient.handler.QuitGroupResponseHandler;
 import org.lxr.nettychatclient.handler.Spliter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,9 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private JoinGroupResponseHandler joinGroupResponseHandler;
 
+    @Autowired
+    private QuitGroupResponseHandler quitGroupResponseHandler;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
@@ -49,6 +53,7 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
         ch.pipeline().addLast(createGroupResponseHandler);
         ch.pipeline().addLast(logoutResponseHandler);
         ch.pipeline().addLast(joinGroupResponseHandler);
+        ch.pipeline().addLast(quitGroupResponseHandler);
         ch.pipeline().addLast(messageResponseHandler);
     }
 }
