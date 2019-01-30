@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Qualifier("loginHandler")
 @Slf4j
 @Sharable
-public class LoginHandler extends SimpleChannelInboundHandler<LoginRequestPacket>
+public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket>
 {
 
     @Override
