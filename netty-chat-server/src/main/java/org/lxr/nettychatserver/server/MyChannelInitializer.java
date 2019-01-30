@@ -7,6 +7,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.lxr.nettychatserver.codec.PacketDecoder;
 import org.lxr.nettychatserver.codec.PacketEncoder;
 import org.lxr.nettychatserver.handler.AuthHandler;
+import org.lxr.nettychatserver.handler.CreateGroupRequestHandler;
 import org.lxr.nettychatserver.handler.LoginHandler;
 import org.lxr.nettychatserver.handler.MessageRequestHandler;
 import org.lxr.nettychatserver.handler.Spliter;
@@ -25,6 +26,9 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private AuthHandler authHandler;
 
+    @Autowired
+    private CreateGroupRequestHandler createGroupRequestHandler;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
@@ -33,6 +37,7 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
         ch.pipeline().addLast(new PacketEncoder());
         ch.pipeline().addLast(loginHandler);
         ch.pipeline().addLast(authHandler);
+        ch.pipeline().addLast(createGroupRequestHandler);
         ch.pipeline().addLast(messageRequestHandler);
     }
 }
