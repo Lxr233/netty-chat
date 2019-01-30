@@ -7,13 +7,19 @@ import java.util.Map;
 import org.lxr.protocal.command.Command;
 import org.lxr.protocal.packet.Packet;
 import org.lxr.protocal.packet.request.CreateGroupRequestPacket;
+import org.lxr.protocal.packet.request.JoinGroupRequestPacket;
+import org.lxr.protocal.packet.request.ListGroupMembersRequestPacket;
 import org.lxr.protocal.packet.request.LoginRequestPacket;
 import org.lxr.protocal.packet.request.LogoutRequestPacket;
 import org.lxr.protocal.packet.request.MessageRequestPacket;
+import org.lxr.protocal.packet.request.QuitGroupRequestPacket;
 import org.lxr.protocal.packet.response.CreateGroupResponsePacket;
+import org.lxr.protocal.packet.response.JoinGroupResponsePacket;
+import org.lxr.protocal.packet.response.ListGroupMembersResponsePacket;
 import org.lxr.protocal.packet.response.LoginResponsePacket;
 import org.lxr.protocal.packet.response.LogoutResponsePacket;
 import org.lxr.protocal.packet.response.MessageResponsePacket;
+import org.lxr.protocal.packet.response.QuitGroupResponsePacket;
 import org.lxr.serialize.Serializer;
 import org.lxr.serialize.impl.JSONSerializer;
 
@@ -44,6 +50,12 @@ public class PacketCodec
         packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
         packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
         packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
