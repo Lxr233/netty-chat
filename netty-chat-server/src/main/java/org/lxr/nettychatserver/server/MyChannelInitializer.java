@@ -7,6 +7,7 @@ import org.lxr.nettychatserver.codec.PacketDecoder;
 import org.lxr.nettychatserver.codec.PacketEncoder;
 import org.lxr.nettychatserver.handler.AuthHandler;
 import org.lxr.nettychatserver.handler.CreateGroupRequestHandler;
+import org.lxr.nettychatserver.handler.GroupMessageRequestHandler;
 import org.lxr.nettychatserver.handler.JoinGroupRequestHandler;
 import org.lxr.nettychatserver.handler.ListGroupMembersRequestHandler;
 import org.lxr.nettychatserver.handler.LoginRequestHandler;
@@ -44,6 +45,9 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private ListGroupMembersRequestHandler listGroupMembersRequestHandler;
 
+    @Autowired
+    private GroupMessageRequestHandler groupMessageRequestHandler;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
@@ -57,6 +61,7 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
         ch.pipeline().addLast(joinGroupRequestHandler);
         ch.pipeline().addLast(quitGroupRequestHandler);
         ch.pipeline().addLast(listGroupMembersRequestHandler);
+        ch.pipeline().addLast(groupMessageRequestHandler);
         ch.pipeline().addLast(messageRequestHandler);
     }
 }

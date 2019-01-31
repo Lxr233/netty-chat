@@ -7,6 +7,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.lxr.nettychatclient.codec.PacketDecoder;
 import org.lxr.nettychatclient.codec.PacketEncoder;
 import org.lxr.nettychatclient.handler.CreateGroupResponseHandler;
+import org.lxr.nettychatclient.handler.GroupMessageResponseHandler;
 import org.lxr.nettychatclient.handler.JoinGroupResponseHandler;
 import org.lxr.nettychatclient.handler.ListGroupMembersResponseHandler;
 import org.lxr.nettychatclient.handler.LoginHandler;
@@ -47,6 +48,8 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private ListGroupMembersResponseHandler listGroupMembersResponseHandler;
 
+    @Autowired GroupMessageResponseHandler groupMessageResponseHandler;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
@@ -59,6 +62,7 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
         ch.pipeline().addLast(joinGroupResponseHandler);
         ch.pipeline().addLast(quitGroupResponseHandler);
         ch.pipeline().addLast(listGroupMembersResponseHandler);
+        ch.pipeline().addLast(groupMessageResponseHandler);
         ch.pipeline().addLast(messageResponseHandler);
     }
 }
