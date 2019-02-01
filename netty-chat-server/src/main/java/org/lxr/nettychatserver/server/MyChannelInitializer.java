@@ -7,6 +7,7 @@ import org.lxr.nettychatserver.codec.PacketCodecHandler;
 import org.lxr.nettychatserver.handler.AuthHandler;
 import org.lxr.nettychatserver.handler.CreateGroupRequestHandler;
 import org.lxr.nettychatserver.handler.GroupMessageRequestHandler;
+import org.lxr.nettychatserver.handler.IMHandler;
 import org.lxr.nettychatserver.handler.JoinGroupRequestHandler;
 import org.lxr.nettychatserver.handler.ListGroupMembersRequestHandler;
 import org.lxr.nettychatserver.handler.LoginRequestHandler;
@@ -24,28 +25,10 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     private LoginRequestHandler loginRequestHandler;
 
     @Autowired
-    private MessageRequestHandler messageRequestHandler;
+    private IMHandler imHandler;
 
     @Autowired
     private AuthHandler authHandler;
-
-    @Autowired
-    private CreateGroupRequestHandler createGroupRequestHandler;
-
-    @Autowired
-    private LogoutRequestHandler logoutRequestHandler;
-
-    @Autowired
-    private JoinGroupRequestHandler joinGroupRequestHandler;
-
-    @Autowired
-    private QuitGroupRequestHandler quitGroupRequestHandler;
-
-    @Autowired
-    private ListGroupMembersRequestHandler listGroupMembersRequestHandler;
-
-    @Autowired
-    private GroupMessageRequestHandler groupMessageRequestHandler;
 
     @Autowired
     private PacketCodecHandler packetCodecHandler;
@@ -57,12 +40,6 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
         ch.pipeline().addLast(packetCodecHandler);
         ch.pipeline().addLast(loginRequestHandler);
         ch.pipeline().addLast(authHandler);
-        ch.pipeline().addLast(createGroupRequestHandler);
-        ch.pipeline().addLast(logoutRequestHandler);
-        ch.pipeline().addLast(joinGroupRequestHandler);
-        ch.pipeline().addLast(quitGroupRequestHandler);
-        ch.pipeline().addLast(listGroupMembersRequestHandler);
-        ch.pipeline().addLast(groupMessageRequestHandler);
-        ch.pipeline().addLast(messageRequestHandler);
+        ch.pipeline().addLast(imHandler);
     }
 }
