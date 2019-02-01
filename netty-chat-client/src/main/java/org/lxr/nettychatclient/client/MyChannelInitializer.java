@@ -3,9 +3,7 @@ package org.lxr.nettychatclient.client;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import org.lxr.nettychatclient.codec.PacketDecoder;
-import org.lxr.nettychatclient.codec.PacketEncoder;
+import org.lxr.nettychatclient.codec.PacketCodecHandler;
 import org.lxr.nettychatclient.handler.CreateGroupResponseHandler;
 import org.lxr.nettychatclient.handler.GroupMessageResponseHandler;
 import org.lxr.nettychatclient.handler.JoinGroupResponseHandler;
@@ -25,12 +23,6 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     private LoginHandler loginHandler;
 
     @Autowired
-    private PacketDecoder packetDecoder;
-
-    @Autowired
-    private PacketEncoder packetEncoder;
-
-    @Autowired
     private MessageResponseHandler messageResponseHandler;
 
     @Autowired
@@ -48,14 +40,17 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private ListGroupMembersResponseHandler listGroupMembersResponseHandler;
 
-    @Autowired GroupMessageResponseHandler groupMessageResponseHandler;
+    @Autowired
+    private GroupMessageResponseHandler groupMessageResponseHandler;
+
+    @Autowired
+    private PacketCodecHandler packetCodecHandler;
 
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
         ch.pipeline().addLast(new Spliter());
-        ch.pipeline().addLast(packetDecoder);
-        ch.pipeline().addLast(packetEncoder);
+        ch.pipeline().addLast(packetCodecHandler);
         ch.pipeline().addLast(loginHandler);
         ch.pipeline().addLast(createGroupResponseHandler);
         ch.pipeline().addLast(logoutResponseHandler);
