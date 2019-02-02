@@ -6,6 +6,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.lxr.nettychatclient.codec.PacketCodecHandler;
 import org.lxr.nettychatclient.handler.CreateGroupResponseHandler;
 import org.lxr.nettychatclient.handler.GroupMessageResponseHandler;
+import org.lxr.nettychatclient.handler.HeartBeatTimerHandler;
+import org.lxr.nettychatclient.handler.IMIdleStateHandler;
 import org.lxr.nettychatclient.handler.JoinGroupResponseHandler;
 import org.lxr.nettychatclient.handler.ListGroupMembersResponseHandler;
 import org.lxr.nettychatclient.handler.LoginHandler;
@@ -46,9 +48,13 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private PacketCodecHandler packetCodecHandler;
 
+    @Autowired
+    private HeartBeatTimerHandler heartBeatTimerHandler;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
+        ch.pipeline().addLast(new IMIdleStateHandler());
         ch.pipeline().addLast(new Spliter());
         ch.pipeline().addLast(packetCodecHandler);
         ch.pipeline().addLast(loginHandler);
@@ -58,6 +64,7 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
         ch.pipeline().addLast(quitGroupResponseHandler);
         ch.pipeline().addLast(listGroupMembersResponseHandler);
         ch.pipeline().addLast(groupMessageResponseHandler);
+        ch.pipeline().addLast(heartBeatTimerHandler);
         ch.pipeline().addLast(messageResponseHandler);
     }
 }

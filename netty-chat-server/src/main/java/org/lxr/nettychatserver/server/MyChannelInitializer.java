@@ -7,7 +7,9 @@ import org.lxr.nettychatserver.codec.PacketCodecHandler;
 import org.lxr.nettychatserver.handler.AuthHandler;
 import org.lxr.nettychatserver.handler.CreateGroupRequestHandler;
 import org.lxr.nettychatserver.handler.GroupMessageRequestHandler;
+import org.lxr.nettychatserver.handler.HeartBeatRequestHandler;
 import org.lxr.nettychatserver.handler.IMHandler;
+import org.lxr.nettychatserver.handler.IMIdleStateHandler;
 import org.lxr.nettychatserver.handler.JoinGroupRequestHandler;
 import org.lxr.nettychatserver.handler.ListGroupMembersRequestHandler;
 import org.lxr.nettychatserver.handler.LoginRequestHandler;
@@ -33,12 +35,17 @@ public class MyChannelInitializer extends ChannelInitializer<NioSocketChannel>
     @Autowired
     private PacketCodecHandler packetCodecHandler;
 
+    @Autowired
+    private HeartBeatRequestHandler heartBeatRequestHandler;
+
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception
     {
+        ch.pipeline().addLast(new IMIdleStateHandler());
         ch.pipeline().addLast(new Spliter());
         ch.pipeline().addLast(packetCodecHandler);
         ch.pipeline().addLast(loginRequestHandler);
+        ch.pipeline().addLast(heartBeatRequestHandler);
         ch.pipeline().addLast(authHandler);
         ch.pipeline().addLast(imHandler);
     }
